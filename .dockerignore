@@ -1,0 +1,38 @@
+# Node
+node_modules
+.pnp
+.pnp.js
+
+# logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+
+# Next
+.next
+.cache
+
+# VCS
+.git
+.gitignore
+
+# Local env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor
+.vscode
+.idea
+
+# Lockfiles
+pnpm-lock.yaml
+

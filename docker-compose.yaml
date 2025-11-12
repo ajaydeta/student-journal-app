@@ -1,0 +1,53 @@
+version: "3.9"
+
+# Docker Compose for student-journal-app-v2
+# - `web` is for production (build image and run `bun run start`).
+# - `dev` is for local development (bind-mount source, runs `bun run dev`).
+
+services:
+  web:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      args:
+#        BUN_VERSION: "${BUN_VERSION:-1.2.0}"
+
+    image: student-journal-app:jembut
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    # For production you normally do NOT mount the source. The image already contains build artifacts.
+    # If you want to iterate on the running container, remove this volume mapping.
+    # volumes:
+    #   - ./:/app:ro
+    command: ["bun", "run", "start"]
+    restart: unless-stopped
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUN_VERSION: "${BUN_VERSION:-1.2.0}"
+    image: student-journal-app-dev:latest
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    # Bind-mount the project so changes are visible immediately in the container
+    volumes:
+      - ./:/app:delegated
+      - /app/node_modules
+    command: ["bun", "run", "dev"]
+    stdin_open: true
+    tty: true
+
+# Optional: a named network (Compose creates one by default)
+networks:
+  default:
+    name: student-journal-network
